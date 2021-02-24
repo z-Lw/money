@@ -7,41 +7,61 @@
     </div>
 </template>
 
-<script lang="js">
-  export default {
-    name: "Types",
-    data() {
-      return {
-        type: '-' //'-'代表支出，‘+’代表收入
-      }
-    },
-    methods:{
-        selectType(type){
-          this.type=type
-        }
-    }
+<script lang="ts">
+  import Vue from 'vue';
+  import {Component} from 'vue-property-decorator';
 
+  @Component
+  export default class Types extends Vue {
+    type = '-';//'-'代表支出，‘+’代表收入
+    selectType(type: string) {
+      if (type !== '-' && type !== '+') {
+        throw new Error('type is unknown');
+      }
+      this.type = type;
+    }
   }
+
+
+  // export default {
+  //   name: "Types",
+  //   data() {
+  //     return {
+  //       type: '-' //'-'代表支出，‘+’代表收入
+  //     }
+  //   },
+  //   methods:{
+  //       selectType(type){
+  //         if(type !=='-'&&type !== '+'){
+  //           throw new Error('type is unknown')
+  //         }
+  //         this.type=type
+  //       }
+  //   }
+  //
+  // }
 </script>
 
 <style lang="scss" scoped>
-    .types{
-        background:#c4c4c4;
+    .types {
+        background: #c4c4c4;
         display: flex;
         text-align: center;
         font-size: 24px;
+
         > li {
             width: 50%;
             height: 64px;
             display: flex;
             justify-content: center;
             align-items: center;
-            position:relative;
-            &.selected::after{
+            position: relative;
+
+            &.selected::after {
                 content: '';
                 position: absolute;
-                bottom:0;
-                left:0;
+                bottom: 0;
+                left: 0;
                 width: 100%;
                 height: 4px;
                 background: #333333;
