@@ -59,6 +59,7 @@
         window.alert('数据不符合')
       }else{
         this.$emit("update:value",this.output)
+        this.$emit('submit',this.output)
         this.output='0'
       }
 
