@@ -3,7 +3,7 @@
        {{recordList}}
       <NumberPad :value.sync="record.amount" @submit="saveRecord"/>                        <!-- @update:value="onUpdateAmount"-->
        <Types  :value.sync="record.type" /><!--    @update:value="onUpdateType"-->
-       <Notes @update:value="onUpdateNotes"/>
+       <Notes filed-name="备注"  placeholder="请输入备注" @update:value="onUpdateNotes"/>
        <Tags :dataSource.sync="tags" @update:value="onUpdateTags"/>
    </Layout>
 </template>
@@ -21,7 +21,13 @@
   const recordList=recordListModel.fetch();
   const tagList=tagListModel.fetch()
 
-
+  type RecordItem={
+    tags: string[];
+    notes: string;
+    type: string;
+    amount: number;
+    createdAt?: Date; //类/构造函数  ？可存在也可不存在
+  }
   @Component({
     components:{Tags, Types, Notes, NumberPad}
   })
