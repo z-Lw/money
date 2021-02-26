@@ -14,6 +14,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
   color: #333333;
+  background: #f5f5f5;
 }
 
 

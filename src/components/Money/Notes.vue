@@ -6,7 +6,7 @@
             <input type="text"
                    v-model ="value"
                    placeholder="请输入备注">
-<!--            :value="value"  @input="value=$event.target.value" 简写成  v-model ="value"-->
+<!--            :value="value"  @input="value=$event.target.value" 简写成  v-recordListModel ="value"-->
         </label>
     </div>
 </template>
