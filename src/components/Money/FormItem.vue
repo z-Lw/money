@@ -3,7 +3,8 @@
         <label class="formItem">
             <span class="name">{{filedName}}</span>
             <input type="text"
-                   v-model ="value"
+                   :value="value"
+                   @input="onValueChanged($event.target.value)"
                    :placeholder="placeholder">
 <!--            :value="value"  @input="value=$event.target.value" 简写成  v-recordListModel ="value"-->
         </label>
@@ -17,7 +18,7 @@
   export default class FormItem extends Vue{
     @Prop() readonly filedName!: string;
     @Prop() readonly placeholder?: string
-    @Prop({default:''})
+    @Prop({default:''}) readonly value!: string
     @Watch("value")
     onValueChanged(value: string){
     this.$emit('update:value',value)
