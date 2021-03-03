@@ -19,7 +19,6 @@
     @Prop() readonly filedName!: string;
     @Prop() readonly placeholder?: string
     @Prop({default:''}) readonly value!: string
-    @Watch("value")
     onValueChanged(value: string){
     this.$emit('update:value',value)
     }
