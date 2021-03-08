@@ -1,13 +1,19 @@
 type RecordItem = {
-  tags: string[];
+  tags: Tag[];
   notes: string;
   type: string;
   amount: number;
-  createdAt?: Date; //类/构造函数  ？可存在也可不存在
+  createdAt?: string; //类/构造函数  ？可存在也可不存在
 }
+
 type Tag = {
   id: string;
   name: string;
+}
+type RootState = {
+  recordList: RecordItem[];
+  tagList: Tag[];
+  currentTag?: Tag;
 }
 type TagListModel = {
   data: Tag[];
@@ -17,13 +23,7 @@ type TagListModel = {
   remove: (id: string) => boolean;
   save: () => void;
 }
-type RecordItem={
-  tags: string[];
-  notes: string;
-  type: string;
-  amount: number;
-  createdAt?: Date; //类/构造函数  ？可存在也可不存在
-}
+
 // interface Window {
 //
 //
