@@ -29,7 +29,7 @@
 
     toggle(tag: string){
       const index = this.selectedTags.indexOf(tag)
-      console.log(this.selectedTags)
+
       if(index>=0){
         this.selectedTags.splice(index,1)
       }else{
