@@ -3,11 +3,17 @@
       <NumberPad :value.sync="record.amount" @submit="saveRecord"/>                        <!-- @update:value="onUpdateAmount"-->
        <!--    @update:value="onUpdateType"-->
        <Tabs :data-source="recordTypeList" :value.sync="record.type"/>
+
        <div class="notes">
            <FormItem filed-name="备注"
                      placeholder="请输入备注"
                      :value="record.notes"
                      @update:value="onUpdateNotes"/>
+       </div>
+       <div class="createdAt">
+           <FormItem filed-name="日期" type="date"
+                     placeholder="在这里输入日期"
+                     :value.sync="record.createdAt"/>
        </div>
 
        <Tags @update:value="record.tags=$event"/>
@@ -33,7 +39,7 @@
       return store.state.recordList
     }
     record: RecordItem={
-      tags:[],notes:'',type:'-',amount:0
+      tags:[],notes:'',type:'-',amount:0,createdAt:new Date().toISOString()
     }
     onUpdateNotes(value: string){
       this.record.notes=value
