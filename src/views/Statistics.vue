@@ -1,7 +1,11 @@
 <template>
     <Layout>
         <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="type"/>
+        <div class="chart-wrapper" ref="chartWrapper">
+            <chart class="chart" :options="chartOptions" />
+        </div>
         <ol v-if="groupedList.length>0">
+
             <li v-for="(group,index) in groupedList" :key="index">
                 <h3 class="title">{{beautify(group.title)}} <span>￥{{group.total}}</span></h3>
                 <ol>
@@ -19,31 +23,7 @@
         </div>
     </Layout>
 </template>
-<style scoped lang="scss">
-    .noResult{
-        padding: 16px;
-        text-align: center;
-    }
-    %item {
-        padding: 8px 16px;
-        line-height: 24px;
-        display: flex;
-        justify-content: space-between;
-        align-content: center;
-    }
-    .title {
-        @extend %item;
-    }
-    .record {
-        background: white;
-        @extend %item;
-    }
-    .notes {
-        margin-right: auto;
-        margin-left: 16px;
-        color: #999;
-    }
-</style>
+
 
 <script lang="ts">
   import Vue from 'vue';
@@ -52,8 +32,11 @@
   import recordTypeList from '@/constants/recordTypeList';
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
+  import chart from '@/components/chart.vue';
+  import Chart from '@/components/chart.vue';
+  import _ from 'lodash'
   @Component({
-    components: {Tabs},
+    components: {Chart, echarts: chart, Tabs},
   })
   export default class Statistics extends Vue {
     tagString(tags: Tag[]) {
@@ -63,6 +46,62 @@
     get recordList() {
       return (this.$store.state as RootState).recordList;
     }
+    get keyValueList(){
+      const today = new Date()
+      const array=[]
+      for(let i=0;i<=29;i++){
+        const date= dayjs(today).subtract(i,'day').format('YYYY-MM-DD')
+        const found=_.find(this.groupedList, {title:date})
+        const value=found ? found.total:0
+        array.push({key:date,value:value})
+      }
+
+      array.sort((a,b)=>{
+        if(a>b){return 1}
+        else if(a===b){return 0}
+        else return -1
+      })
+      return array
+    }
+    get chartOptions(){
+
+      const key =this.keyValueList.map(item =>item.key)
+      const values=this.keyValueList.map(item => item.value)
+      return {
+        grid:{
+          right:0,
+          left:0
+        },
+        xAxis: {
+          type: 'category',
+          data: key,
+          axisTick:{alignWithLabel:true},
+          axisLine:{lineStyle:{color:'#666'}},
+          axisLabel:{
+            formatter: function (value: string) {
+                return value.substr(5)
+            }
+          }
+        },
+        yAxis: {
+          type: 'value'
+        },
+        tooltip:{
+          show:true,
+          triggerOn:'click',
+          formatter:'{c}',
+          position:'top'
+        },
+        series: [{
+          symbolSize:12,
+          symbol:'circle',
+          itemStyle:{ borderWidth:1,color: '#666',borderColor:'#666'},
+          data: values,
+          type: 'line'
+        }]
+      }
+    }
+
     get groupedList() {
       const {recordList} = this;
       if(recordList.length===0){return []}
@@ -108,10 +147,48 @@
         return day.format('YYYY年M月D日')
       }
     }
+    mounted(){
+      const div = (this.$refs.chartWrapper as HTMLDivElement);
+      div.scrollLeft = div.scrollWidth;
+    }
     type = '-';
     recordTypeList = recordTypeList;
   }
 </script>
+<style scoped lang="scss">
+    .noResult{
+        padding: 16px;
+        text-align: center;
+    }
+    %item {
+        padding: 8px 16px;
+        line-height: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+    }
+    .title {
+        @extend %item;
+    }
+    .record {
+        background: white;
+        @extend %item;
+    }
+    .notes {
+        margin-right: auto;
+        margin-left: 16px;
+        color: #999;
+    }
+    .chart{
+        width: 430%;
+        &-wrapper{
+            overflow: auto;
+            &::-webkit-scrollbar{
+                display: none;
+            }
+        }
+    }
+</style>
 <style scoped lang="scss">
     ::v-deep {
         .type-tabs-item {

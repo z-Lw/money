@@ -21,6 +21,6 @@ module.exports = {
 
   },
   publicPath: process.env.NODE_ENV === 'production'
-    ? '/money-website/'
+    ? '/money-website2/'
     : '/'
 }

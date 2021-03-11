@@ -71,8 +71,8 @@
         display: flex;
         flex-direction: column-reverse;
     }
-    .notes{
-        padding: 12px 0;
+    .notes,.createdAt{
+        padding: 8px 0;
     }
 </style>
 
