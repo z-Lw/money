@@ -1,4 +1,4 @@
-# morney
+# money
 
 ## Project setup
 ```
